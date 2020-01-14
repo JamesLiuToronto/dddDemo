@@ -49,5 +49,32 @@ public class SnackMachine extends Entity  {
 	}
 	
 	
+	
+	public void setMoneyInside(Money moneyInside) {
+		this.moneyInside = moneyInside;
+	}
+
+
+	public void setMoneyInTransaction(Money moneyInTransaction) {
+		this.moneyInTransaction = moneyInTransaction;
+	}
+
+
+	public SnackMachineDto convertToSnackMachineDto() {
+
+        SnackMachineDto snackMachineDto = new SnackMachineDto();
+
+        snackMachineDto.setId(id);
+        snackMachineDto.setMoneyInTransaction(moneyInTransaction.getAmount());        
+        snackMachineDto.setOneCentCount(moneyInside.getOneCentCount());        
+        snackMachineDto.setTenCentCount(moneyInside.getTenCentCount());        
+        snackMachineDto.setQuarterCount(moneyInside.getQuarterCount());                
+        snackMachineDto.setOneDollarCount(moneyInside.getOneDollarCount());        
+        snackMachineDto.setFiveDollarCount(moneyInside.getFiveDollarCount());
+        snackMachineDto.setTwentyDollarCount(moneyInside.getTwentyDollarCount());
+
+        return snackMachineDto;
+
+}
 
 }
