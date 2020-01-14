@@ -48,7 +48,7 @@ public class SnackMachineTest {
 
 		snackMachine.insertMoney(Money.DOLLAR);
 
-		snackMachine.buySnack();
+		snackMachine.buySnack(1);
 
 		assertEquals(snackMachine.getMoneyInTransaction().getAmount(), new BigDecimal(0).round(Money.ROUND));
 
@@ -63,6 +63,27 @@ public class SnackMachineTest {
 			failedFunction();
 		  });
 		 
+
+    }
+	
+	
+	@Test
+
+    public void buySnack_trades_inserted_money_for_a_snack() {
+
+            SnackMachine snackMachine = new SnackMachine();
+
+            snackMachine.loadSnacks(1, new Snack("Some snack"), 10, new BigDecimal(1));
+            
+            snackMachine.insertMoney(Money.DOLLAR);
+
+            snackMachine.buySnack(1);
+
+            assertEquals(snackMachine.getMoneyInTransaction(), 0);        
+			assertEquals(snackMachine.getMoneyInside().getAmount(), new BigDecimal(11));
+
+            Slot slot = snackMachine.getSlots().stream().filter(x -> x.getPosition() == 1).findAny().orElse(null);
+            assertEquals(slot.getQuantity(), 1);
 
     }
 	

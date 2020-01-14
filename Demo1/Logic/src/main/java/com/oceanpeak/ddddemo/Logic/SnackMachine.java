@@ -1,8 +1,11 @@
 package com.oceanpeak.ddddemo.Logic;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class SnackMachine extends Entity  {
+public class SnackMachine extends AggregateRoot  {
 
 	private Money moneyInside;
 	private Money moneyInTransaction;
@@ -10,6 +13,10 @@ public class SnackMachine extends Entity  {
 	public SnackMachine() {
 		moneyInside = Money.NONE;
 		moneyInTransaction = Money.NONE;
+		slots = new ArrayList<>();
+        slots.add(new Slot(this, 1, null, 0, new BigDecimal(1)));
+        slots.add(new Slot(this, 2, null, 0, new BigDecimal(1)));
+        slots.add(new Slot(this, 3, null, 0, new BigDecimal(1)));
 	}
 
 		
@@ -25,16 +32,40 @@ public class SnackMachine extends Entity  {
 
         moneyInTransaction = Money.add(moneyInTransaction, money);
 
-}
+	}
+	
+	private List<Slot> slots;
+
+    public List<Slot> getSlots() {
+        	return slots;
+    }
+
+    public void setSlots(List<Slot> slots) {
+            this.slots = slots;
+    }
+
+    public void loadSnacks(int position, Snack snack, int quantity, BigDecimal price) {
+            Slot slot = slots.stream().filter(x -> x.getPosition() == position).findAny().orElse(null);
+            if(slot != null) {
+            	slot.setSnack(snack);
+                slot.setQuantity(quantity);
+                slot.setPrice(price);
+            }
+    }
 
 	public void returnMoney() {
 		moneyInTransaction = Money.NONE;
 
 	}
 
-	public void buySnack() {
+		
+	public void buySnack(int position) {
 
-		moneyInside = Money.add(moneyInside, moneyInTransaction);
+        Slot slot = slots.stream().filter(x -> x.getPosition() == position).findAny().orElse(null);
+
+        slot.setQuantity(slot.getQuantity()-1);
+
+        moneyInside = Money.add(moneyInside, moneyInTransaction);
 
 		moneyInTransaction = Money.NONE;
 
