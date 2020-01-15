@@ -1,6 +1,5 @@
 package com.oceanpeak.ddddemo.Logic;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,14 +8,15 @@ public class SnackMachine extends AggregateRoot  {
 
 	private Money moneyInside;
 	private Money moneyInTransaction;
+	private List<Slot> slots;
 	
 	public SnackMachine() {
 		moneyInside = Money.NONE;
 		moneyInTransaction = Money.NONE;
 		slots = new ArrayList<>();
-        slots.add(new Slot(this, 1, null, 0, new BigDecimal(1)));
-        slots.add(new Slot(this, 2, null, 0, new BigDecimal(1)));
-        slots.add(new Slot(this, 3, null, 0, new BigDecimal(1)));
+		slots.add(new Slot(this, 1));
+        slots.add(new Slot(this, 2));
+        slots.add(new Slot(this, 3));
 	}
 
 		
@@ -34,8 +34,7 @@ public class SnackMachine extends AggregateRoot  {
 
 	}
 	
-	private List<Slot> slots;
-
+	
     public List<Slot> getSlots() {
         	return slots;
     }
@@ -44,13 +43,11 @@ public class SnackMachine extends AggregateRoot  {
             this.slots = slots;
     }
 
-    public void loadSnacks(int position, Snack snack, int quantity, BigDecimal price) {
-            Slot slot = slots.stream().filter(x -> x.getPosition() == position).findAny().orElse(null);
-            if(slot != null) {
-            	slot.setSnack(snack);
-                slot.setQuantity(quantity);
-                slot.setPrice(price);
-            }
+    public void loadSnacks(int position, SnackPile snackPile) {
+    	Slot slot = slots.stream().filter(x -> x.getPosition() == position).findAny().orElse(null);
+        if(slot != null) {
+                slot.setSnackPile(snackPile);
+        }
     }
 
 	public void returnMoney() {
@@ -61,9 +58,9 @@ public class SnackMachine extends AggregateRoot  {
 		
 	public void buySnack(int position) {
 
-        Slot slot = slots.stream().filter(x -> x.getPosition() == position).findAny().orElse(null);
+		Slot slot = getSlot(position);
 
-        slot.setQuantity(slot.getQuantity()-1);
+        slot.setSnackPile(slot.getSnackPile().subtractOne());
 
         moneyInside = Money.add(moneyInside, moneyInTransaction);
 
@@ -106,6 +103,20 @@ public class SnackMachine extends AggregateRoot  {
 
         return snackMachineDto;
 
-}
+	}
+	
+	
+	public Slot getSlot(int position) {
+		 return slots.stream().filter(x -> x.getPosition() == position).findAny().orElse(null);
+
+    }
+
+    public SnackPile getSnackPile(int position) {
+
+            return getSlot(position).getSnackPile();
+
+    }
+
+    
 
 }

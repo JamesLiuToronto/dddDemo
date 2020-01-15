@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Entity;
 
+@Entity
 public class SnackMachineDto {
 	
 	@Id

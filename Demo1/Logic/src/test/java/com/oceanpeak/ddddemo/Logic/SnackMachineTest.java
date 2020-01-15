@@ -73,17 +73,17 @@ public class SnackMachineTest {
 
             SnackMachine snackMachine = new SnackMachine();
 
-            snackMachine.loadSnacks(1, new Snack("Some snack"), 10, new BigDecimal(1));
+            snackMachine.loadSnacks(1, new SnackPile(new Snack("Some snack"), 10, new BigDecimal(1)));
             
             snackMachine.insertMoney(Money.DOLLAR);
 
             snackMachine.buySnack(1);
 
-            assertEquals(snackMachine.getMoneyInTransaction(), 0);        
-			assertEquals(snackMachine.getMoneyInside().getAmount(), new BigDecimal(11));
+            assertEquals(snackMachine.getMoneyInTransaction().getAmount(), new BigDecimal(0));        
+			assertEquals(snackMachine.getMoneyInside().getAmount(), new BigDecimal(1));
 
             Slot slot = snackMachine.getSlots().stream().filter(x -> x.getPosition() == 1).findAny().orElse(null);
-            assertEquals(slot.getQuantity(), 1);
+            assertEquals(slot.getSnackPile().getQuantity(), 9);
 
     }
 	

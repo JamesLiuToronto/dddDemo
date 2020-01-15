@@ -4,62 +4,43 @@ import java.math.BigDecimal;
 
 public class Slot {
 
-	private Snack snack;
-	private int quantity;
-	private BigDecimal price;
-	private SnackMachine snackMachine;
-	private int position;
+	private SnackPile snackPile;
+    private SnackMachine snackMachine;
+    private int position;
 
-	public Slot() {
-	}
+    public Slot() {
+    }
 
-	public Slot(SnackMachine snackMachine, int position, Snack snack, int quantity, BigDecimal price) {
+    public Slot(SnackMachine snackMachine, int position) {
 
-		this.snackMachine = snackMachine;
-		this.position = position;
-		this.snack = snack;
-		this.quantity = quantity;
-		this.price = price;
-	}
+            this.snackMachine = snackMachine;
+            this.position = position;
+            this.snackPile = new SnackPile(null, 0, new BigDecimal(0));
 
-	public Snack getSnack() {
-		return snack;
-	}
+    }
 
-	public void setSnack(Snack snack) {
-		this.snack = snack;
-	}
+    public SnackPile getSnackPile() {
+            return snackPile;
+    }
 
-	public int getQuantity() {
-		return quantity;
-	}
+    public void setSnackPile(SnackPile snackPile) {
+            this.snackPile = snackPile;
+    }
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    public SnackMachine getSnackMachine() {
+            return snackMachine;
+    }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+    public void setSnackMachine(SnackMachine snackMachine) {
+            this.snackMachine = snackMachine;
+    }
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
+    public int getPosition() {
+            return position;
+    }
 
-	public SnackMachine getSnackMachine() {
-		return snackMachine;
-	}
-
-	public void setSnackMachine(SnackMachine snackMachine) {
-		this.snackMachine = snackMachine;
-	}
-
-	public int getPosition() {
-		return position;
-	}
-
-	public void setPosition(int position) {
-		this.position = position;
-	}
+    public void setPosition(int position) {
+            this.position = position;
+    }
 
 }
