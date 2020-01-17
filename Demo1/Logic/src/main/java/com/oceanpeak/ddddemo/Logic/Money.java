@@ -156,5 +156,50 @@ public class Money extends ValueObject<Money> {
 		return sum;
 
 	}
+	
+	
+	public boolean canAllocate(BigDecimal amount){
+
+        Money money = allocateCore(amount);
+        return money.getAmount().compareTo(amount) == 0;
+
+    }
+
+    public Money allocate(BigDecimal amount){
+
+        if (!canAllocate(amount))
+            throw new IllegalStateException();
+
+        return allocateCore(amount);
+
+    }
+
+    private Money allocateCore(BigDecimal amount){
+
+        int twentyDollarCount = Math.min(amount.divide(new BigDecimal(20),BigDecimal.ROUND_UP).intValue(), this.twentyDollarCount);
+        amount = amount.subtract(new BigDecimal(twentyDollarCount * 20));
+
+        int fiveDollarCount = Math.min(amount.divide(new BigDecimal(5),BigDecimal.ROUND_UP).intValue(), this.fiveDollarCount);
+        amount = amount.subtract(new BigDecimal(fiveDollarCount * 5));
+
+        int oneDollarCount = Math.min(amount.intValue(), this.oneDollarCount);
+        amount = amount.subtract(new BigDecimal(oneDollarCount));
+
+        int quarterCount = Math.min(amount.divide(new BigDecimal(0.25),BigDecimal.ROUND_UP).intValue(), this.quarterCount);
+        amount = amount.subtract(new BigDecimal(quarterCount * 0.25));
+
+        int tenCentCount = Math.min(amount.divide(new BigDecimal(0.1),BigDecimal.ROUND_UP).intValue(), this.tenCentCount);
+        amount = amount.subtract(new BigDecimal(tenCentCount * 0.1));
+
+        int oneCentCount = Math.min(amount.divide(new BigDecimal(0.01),BigDecimal.ROUND_UP).intValue(), this.oneCentCount);
+        amount = amount.subtract(new BigDecimal(oneCentCount * 0.01));
+        return new Money(
+            oneCentCount,
+            tenCentCount,
+            quarterCount,
+            oneDollarCount,
+            fiveDollarCount,
+            twentyDollarCount);
+    }
 
 }

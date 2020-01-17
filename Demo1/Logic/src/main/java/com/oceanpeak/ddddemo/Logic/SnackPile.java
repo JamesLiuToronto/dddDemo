@@ -18,7 +18,7 @@ public class SnackPile extends ValueObject<SnackPile> {
 
     	 if (quantity < 0)
              throw new IllegalStateException();
-    	 if (price.compareTo(BigDecimal.ZERO) > 0)
+    	 if (price.compareTo(BigDecimal.ZERO) == -1)
              throw new IllegalStateException();
             this.snack = snack;
             this.quantity = quantity;

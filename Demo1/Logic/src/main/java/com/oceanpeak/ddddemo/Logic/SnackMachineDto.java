@@ -1,9 +1,14 @@
 package com.oceanpeak.ddddemo.Logic;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
 @Entity
@@ -20,6 +25,11 @@ public class SnackMachineDto {
     private int fiveDollarCount;
     private int twentyDollarCount;
     private BigDecimal moneyInTransaction;
+    
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "snackMachineId")
+    private List<SlotDto> slotDtoList;
+	
 	public long getId() {
 		return id;
 	}
@@ -69,13 +79,28 @@ public class SnackMachineDto {
 		this.moneyInTransaction = moneyInTransaction;
 	}
 	
+	
+	
+	public List<SlotDto> getSlotDtoList() {
+		return slotDtoList;
+	}
+	public void setSlotDtoList(List<SlotDto> slotDtoList) {
+		this.slotDtoList = slotDtoList;
+	}
 	public SnackMachine convertToSnackMachine() {
 
-        SnackMachine snackMachine = new SnackMachine();
-        snackMachine.setId(id);        
-        snackMachine.setMoneyInTransaction(Money.NONE);
-        snackMachine.setMoneyInside(new Money(oneCentCount,tenCentCount,quarterCount,                        
+		SnackMachine snackMachine = new SnackMachine();
+        snackMachine.setId(id);
+        snackMachine.setMoneyInTransaction(moneyInTransaction);
+        snackMachine.setMoneyInside(new Money(oneCentCount,tenCentCount,quarterCount,
         		oneDollarCount,fiveDollarCount,twentyDollarCount));
+
+        List<Slot> slotList = new ArrayList<>();
+
+        for(SlotDto slotDto : slotDtoList) {
+                slotList.add(slotDto.convertToSlot());
+        }
+        snackMachine.setSlots(slotList);
 
         return snackMachine;
 

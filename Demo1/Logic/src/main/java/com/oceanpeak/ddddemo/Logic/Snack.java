@@ -1,22 +1,21 @@
 package com.oceanpeak.ddddemo.Logic;
 
 public class Snack extends AggregateRoot {
-
+	public static Snack None = new Snack(0, "None");
+	public static Snack Chocolate = new Snack(1, "Chocolate");
+	public static Snack Soda = new Snack(2, "Soda");
+	public static Snack Gum = new Snack(3, "Gum");
 	private String name;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
+	private Snack(long id, String name) {
+		this.id = id;
 		this.name = name;
 	}
 
-	private Snack() {
+	public SnackDto convertToSnackDto() {
+		SnackDto snackDto = new SnackDto();
+		snackDto.setId(id);
+		snackDto.setName(name);
+		return snackDto;
 	}
-
-	public Snack(String name) {
-		this.name = name;
-	}
-
 }
