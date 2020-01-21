@@ -8,6 +8,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.oceanpeak.ddddemo.Logic.sharedkernel.Money;
+import com.oceanpeak.ddddemo.Logic.snackmachine.Slot;
+import com.oceanpeak.ddddemo.Logic.snackmachine.Snack;
+import com.oceanpeak.ddddemo.Logic.snackmachine.SnackMachine;
+import com.oceanpeak.ddddemo.Logic.snackmachine.SnackPile;
+
 @SpringBootTest
 public class SnackMachineTest {
 
@@ -18,7 +24,8 @@ public class SnackMachineTest {
 		snackMachine.insertMoney(Money.DOLLAR);
 		snackMachine.returnMoney();
 
-		assertEquals(snackMachine.getMoneyInside().getAmount(), new BigDecimal(0).round(Money.ROUND));
+		assertEquals(snackMachine.getMoneyInside().getAmount(), 
+				new BigDecimal(0).setScale(Money.ROUND, BigDecimal.ROUND_HALF_UP));
 
 	}
 	
@@ -31,7 +38,8 @@ public class SnackMachineTest {
 		snackMachine.insertMoney(Money.DOLLAR);
 		snackMachine.insertMoney(Money.CENT);
 
-		assertEquals(snackMachine.getMoneyInTransaction().round(Money.ROUND), new BigDecimal(1.01).round(Money.ROUND)) ;
+		assertEquals(snackMachine.getMoneyInTransaction().setScale(Money.ROUND, BigDecimal.ROUND_HALF_UP), 
+				new BigDecimal(1.01).setScale(Money.ROUND, BigDecimal.ROUND_HALF_UP));
 
 	}
 	

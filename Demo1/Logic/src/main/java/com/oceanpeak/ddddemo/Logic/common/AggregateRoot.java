@@ -1,4 +1,4 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.common;
 
 public abstract class AggregateRoot extends Entity {
 

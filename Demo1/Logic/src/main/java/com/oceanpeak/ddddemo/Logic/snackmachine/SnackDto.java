@@ -1,4 +1,4 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.snackmachine;
 
 import javax.persistence.Id;
 import javax.persistence.Entity;

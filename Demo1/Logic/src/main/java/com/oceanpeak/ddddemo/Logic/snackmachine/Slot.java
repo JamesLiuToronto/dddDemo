@@ -1,6 +1,6 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.snackmachine;
 
-import java.math.BigDecimal;
+import com.oceanpeak.ddddemo.Logic.common.Entity;
 
 public class Slot extends Entity{
 
@@ -16,7 +16,7 @@ public class Slot extends Entity{
 
             this.snackMachine = snackMachine;
             this.position = position;
-            this.snackPile = new SnackPile(null, 0, new BigDecimal(0));
+            this.snackPile = SnackPile.Empty;
 
     }
 

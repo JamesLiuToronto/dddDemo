@@ -1,9 +1,12 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.snackmachine;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.oceanpeak.ddddemo.Logic.common.AggregateRoot;
+import com.oceanpeak.ddddemo.Logic.sharedkernel.Money;
 
 public class SnackMachine extends AggregateRoot  {
 

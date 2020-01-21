@@ -1,7 +1,9 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.sharedkernel;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+
+import com.oceanpeak.ddddemo.Logic.common.ValueObject;
 
 public class Money extends ValueObject<Money> {
 	private int oneCentCount;
@@ -21,7 +23,7 @@ public class Money extends ValueObject<Money> {
 
 	private BigDecimal amount;
 
-	public static MathContext ROUND = new MathContext(2) ;
+	public static int ROUND = 2 ;
 	public BigDecimal getAmount() {
 
 		return getSingleAmout(oneCentCount, 0.01).
@@ -29,13 +31,13 @@ public class Money extends ValueObject<Money> {
 				add(getSingleAmout(quarterCount, 0.25)).
 				add(getSingleAmout(oneDollarCount, 1)).
 				add(getSingleAmout(fiveDollarCount, 5)).
-				add(getSingleAmout(twentyDollarCount, 20)).round(ROUND);
+				add(getSingleAmout(twentyDollarCount, 20)).setScale(ROUND, BigDecimal.ROUND_HALF_UP);
 			
 	}
 	
 	private BigDecimal getSingleAmout(int count, double unit) {
-		if (count == 0) return new BigDecimal(0).round(ROUND);
-		return new BigDecimal(count).multiply(new BigDecimal(unit)).round(ROUND) ;
+		if (count == 0) return new BigDecimal(0).setScale(ROUND, BigDecimal.ROUND_HALF_UP);
+		return new BigDecimal(count).multiply(new BigDecimal(unit)).setScale(ROUND, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public Money(int oneCentCount, int tenCentCount, int quarterCount, int oneDollarCount, int fiveDollarCount,

@@ -1,4 +1,7 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.snackmachine;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.oceanpeak.ddddemo.Logic.sharedkernel.Money;
 
 @Controller
 @RequestMapping(path = "/snackmachines")
@@ -17,6 +22,15 @@ public class SnackMachineController {
 	static SnackMachine snackMachine = new SnackMachine(); // We will change this when we
 	// introduce persistence for our domain model.
 
+	@GetMapping()
+    @ResponseBody
+    public List<SnackMachineDto> getSnackMachines() {
+        List<SnackMachineDto> list = new ArrayList<>();
+        snackMachineRepository.findAll().forEach(list::add);
+        return list;
+    }
+	
+	
 	@GetMapping("/{id}")
 	@ResponseBody
 	public SnackMachineDto getSnackMachine(@PathVariable("id") long id) {
@@ -43,12 +57,17 @@ public class SnackMachineController {
 
 		else if (coinOrNote.equalsIgnoreCase("TwentyDollar"))
 			snackMachine.insertMoney(Money.TWENTYDOLLAR);
+		
+		snackMachineRepository.save(snackMachine.convertToSnackMachineDto());
 
 	}
 	
 	@PutMapping("/{id}/moneyInTransaction")
 	public void returnMoney(@PathVariable("id") long id) {
-		snackMachine.returnMoney();
+		SnackMachineDto snackMachineDto = snackMachineRepository.findById(id).orElse(null);
+        SnackMachine snackMachine = snackMachineDto.convertToSnackMachine();
+        snackMachine.returnMoney();
+        snackMachineRepository.save(snackMachine.convertToSnackMachineDto());
 	}
 	
 	@PutMapping("/{id}/{slotNumber}")

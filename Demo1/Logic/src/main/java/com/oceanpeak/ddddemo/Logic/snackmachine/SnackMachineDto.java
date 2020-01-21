@@ -1,4 +1,4 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.snackmachine;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,6 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
+
+import com.oceanpeak.ddddemo.Logic.sharedkernel.Money;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
@@ -29,6 +34,21 @@ public class SnackMachineDto {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "snackMachineId")
     private List<SlotDto> slotDtoList;
+	
+	@Transient
+    private BigDecimal amount ;
+
+    public BigDecimal getAmount() {
+            return  amount;
+    }
+
+    @PostLoad
+    public void setAmount() {
+    	float amt = oneCentCount * 0.01f + tenCentCount * 0.10f + quarterCount * 0.25f + oneDollarCount * 1f
+                        + fiveDollarCount * 5f + twentyDollarCount * 20f;
+    	amount= new BigDecimal(Float.toString(amt)) ;
+
+    }
 	
 	public long getId() {
 		return id;

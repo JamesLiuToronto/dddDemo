@@ -1,4 +1,6 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.snackmachine;
+
+import com.oceanpeak.ddddemo.Logic.common.AggregateRoot;
 
 public class Snack extends AggregateRoot {
 	public static Snack None = new Snack(0, "None");

@@ -1,6 +1,8 @@
-package com.oceanpeak.ddddemo.Logic;
+package com.oceanpeak.ddddemo.Logic.snackmachine;
 
 import java.math.BigDecimal;
+
+import com.oceanpeak.ddddemo.Logic.common.ValueObject;
 
 public class SnackPile extends ValueObject<SnackPile> {
 
@@ -13,6 +15,8 @@ public class SnackPile extends ValueObject<SnackPile> {
     private SnackPile() {
 
     }
+    
+    public static SnackPile Empty = new SnackPile(Snack.None, 0, new BigDecimal(0));
 
     public SnackPile(Snack snack, int quantity, BigDecimal price) {
 
