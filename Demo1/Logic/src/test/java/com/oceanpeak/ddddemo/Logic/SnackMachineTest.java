@@ -86,7 +86,7 @@ public class SnackMachineTest {
             snackMachine.buySnack(1);
 
             assertEquals(snackMachine.getMoneyInTransaction(), new BigDecimal(0));        
-			assertEquals(snackMachine.getMoneyInside().getAmount(), new BigDecimal(1));
+			assertEquals(snackMachine.getMoneyInside().getAmount().floatValue(), 1);
 
             Slot slot = snackMachine.getSlots().stream().filter(x -> x.getPosition() == 1).findAny().orElse(null);
             assertEquals(slot.getSnackPile().getQuantity(), 9);
@@ -132,7 +132,7 @@ public class SnackMachineTest {
 		snackMachine.insertMoney(Money.DOLLAR);
 		snackMachine.buySnack(1);
 		
-		assertEquals(snackMachine.getMoneyInside().getAmount(), new BigDecimal(1.5));
+		assertEquals(snackMachine.getMoneyInside().getAmount().floatValue(), 1.5);
         assertEquals(snackMachine.getMoneyInTransaction(), new BigDecimal(0));
 
     }
