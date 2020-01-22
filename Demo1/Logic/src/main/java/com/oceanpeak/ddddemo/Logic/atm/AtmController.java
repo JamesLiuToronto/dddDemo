@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.oceanpeak.ddddemo.Logic.management.HeadOffice;
 
 @Controller
 @RequestMapping(path = "/atms")
@@ -21,6 +25,9 @@ public class AtmController {
 
 	@Autowired
 	private PaymentGateway paymentGateway;
+
+	@Autowired
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	@GetMapping()
 	@ResponseBody
@@ -48,10 +55,27 @@ public class AtmController {
 
 		float amountWithCommission = atm.caluculateAmountWithCommission(amount);
 		paymentGateway.chargePayment(amountWithCommission);
-		atm.takeMoney( new BigDecimal(Float.toString(amount)));
+		atm.takeMoney(new BigDecimal(Float.toString(amount)));
 		atmRepository.save(atm.convertToAtmDto());
 
+		// HeadOffice headOffice = getHeadOfficeInstance();
+		// headOffice.setBalance(headOffice.getBalance() + amountWithCommission);
+		// officeRepository.save(headOffice);
+
+		dispatchEvents(atmDto);
 		return "You have withrawn amount : $" + amount;
+
+	}
+
+	private void dispatchEvents(AtmDto atmDto) {
+
+		if (atmDto == null)
+			return;
+
+		for (ApplicationEvent domainEvent : atmDto.getDomainEvents()) {
+			applicationEventPublisher.publishEvent(domainEvent);
+		}
+		atmDto.clearEvents();
 
 	}
 

@@ -1,82 +1,51 @@
-package com.oceanpeak.ddddemo.Logic.atm;
-
-import java.math.BigDecimal;
-import java.util.List;
+package com.oceanpeak.ddddemo.Logic.management;
 
 import javax.persistence.Entity;
-
 import javax.persistence.GeneratedValue;
-
 import javax.persistence.Id;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
-import org.springframework.context.ApplicationEvent;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanpeak.ddddemo.Logic.sharedkernel.Money;
 
 @Entity
-public class AtmDto {
+public class HeadOfficeDto {
 
 	@Id
 	@GeneratedValue
 	private long id;
-
-	private BigDecimal moneyCharged;
-
+	private float balance;
 	private int oneCentCount;
-
 	private int tenCentCount;
-
 	private int quarterCount;
-
 	private int oneDollarCount;
-
 	private int fiveDollarCount;
-
 	private int twentyDollarCount;
 
 	@Transient
-	private BigDecimal amount;
+	private float amount;
 
-	public BigDecimal getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 
 	@PostLoad
+
 	public void setAmount() {
-		float amt = oneCentCount * 0.01f + tenCentCount * 0.10f + quarterCount * 0.25f + oneDollarCount * 1f
+
+		amount = oneCentCount * 0.01f + tenCentCount * 0.10f + quarterCount * 0.25f + oneDollarCount * 1f
 				+ fiveDollarCount * 5f + twentyDollarCount * 20f;
-		amount =  new BigDecimal(Float.toString(amt)) ;
 	}
 
-	// setters and getters for all the fields
+	public HeadOffice convertToHeadOffice() {
+		HeadOffice headOffice = new HeadOffice();
 
-	public Atm convertToAtm() {
-		Atm atm = new Atm();
-		atm.setId(id);
-		atm.setMoneyCharged(moneyCharged);
-		atm.setMoneyInside(new Money(oneCentCount, tenCentCount, quarterCount,
+		headOffice.setId(id);
+		headOffice.setBalance(balance);
+		headOffice.setCash(new Money(oneCentCount, tenCentCount, quarterCount,
 				oneDollarCount, fiveDollarCount, twentyDollarCount));
-		return atm;
-
+		return headOffice;
 	}
-	
-	@Transient
-    @JsonIgnore
-    private List<ApplicationEvent> domainEvents;
-    public void clearEvents() {
-            domainEvents.clear();
-    }
-
-    public List<ApplicationEvent> getDomainEvents() {
-            return domainEvents;
-    }
-
-    public void setDomainEvents(List<ApplicationEvent> domainEvents) {
-            this.domainEvents = domainEvents;
-    }
 
 	public long getId() {
 		return id;
@@ -86,12 +55,12 @@ public class AtmDto {
 		this.id = id;
 	}
 
-	public BigDecimal getMoneyCharged() {
-		return moneyCharged;
+	public float getBalance() {
+		return balance;
 	}
 
-	public void setMoneyCharged(BigDecimal moneyCharged) {
-		this.moneyCharged = moneyCharged;
+	public void setBalance(float balance) {
+		this.balance = balance;
 	}
 
 	public int getOneCentCount() {
@@ -142,8 +111,9 @@ public class AtmDto {
 		this.twentyDollarCount = twentyDollarCount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(float amount) {
 		this.amount = amount;
 	}
-
+	
+	
 }

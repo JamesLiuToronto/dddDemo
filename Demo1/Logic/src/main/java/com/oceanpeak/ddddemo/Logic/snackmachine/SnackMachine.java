@@ -138,6 +138,15 @@ public class SnackMachine extends AggregateRoot  {
             return getSlot(position).getSnackPile();
 
     }
+    
+    public Money unloadMoney() {
+
+        if (moneyInTransaction.floatValue() > 0)
+                throw new IllegalStateException();
+        Money money = moneyInside;
+        moneyInside = Money.NONE;
+        return money;
+    }
 
     
 

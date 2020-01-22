@@ -3,6 +3,7 @@ package com.oceanpeak.ddddemo.Logic.atm;
 import java.math.BigDecimal;
 
 import com.oceanpeak.ddddemo.Logic.common.AggregateRoot;
+import com.oceanpeak.ddddemo.Logic.management.HeadOffice;
 import com.oceanpeak.ddddemo.Logic.sharedkernel.Money;
 
 public class Atm extends AggregateRoot {
@@ -20,6 +21,8 @@ public class Atm extends AggregateRoot {
 		BigDecimal amountWithCommission = new BigDecimal(
 				Float.toString(caluculateAmountWithCommission(amount.floatValue())));
 		moneyCharged = moneyCharged.add(amountWithCommission);
+		
+		//headOffice.setBalance(headOffice.getBalance() + amountWithCommission.floatValue());
 
 	}
 
@@ -37,17 +40,11 @@ public class Atm extends AggregateRoot {
 	public float caluculateAmountWithCommission(float amount) {
 
 		float commission = amount * commissionRate.floatValue();
-
 		float lessThanCent = commission % 0.01f;
-
 		if (lessThanCent > 0) {
-
 			commission = commission - lessThanCent + 0.01f;
-
 		}
-
 		return amount + commission;
-
 	}
 
 	public void loadMoney(Money money) {
@@ -83,6 +80,7 @@ public class Atm extends AggregateRoot {
 		atmDto.setFiveDollarCount(moneyInside.getFiveDollarCount());
 		atmDto.setTwentyDollarCount(moneyInside.getTwentyDollarCount());
 
+		atmDto.setDomainEvents(getDomainEvents());
 		return atmDto;
 
 	}
