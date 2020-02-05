@@ -13,6 +13,8 @@ public class Atm extends AggregateRoot {
 	private static BigDecimal commissionRate = (new BigDecimal(0.01)).setScale(Money.ROUND, BigDecimal.ROUND_HALF_UP);
 	private Money moneyInside = Money.NONE;
 	private BigDecimal moneyCharged = new BigDecimal(0);
+	
+	/* This is just a note*/
 	@Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
