@@ -63,6 +63,7 @@ public class AtmDto {
 
 	}
 	
+	
 	@Transient
     @JsonIgnore
     private List<ApplicationEvent> domainEvents;
@@ -77,7 +78,7 @@ public class AtmDto {
     public void setDomainEvents(List<ApplicationEvent> domainEvents) {
             this.domainEvents = domainEvents;
     }
-
+	
 	public long getId() {
 		return id;
 	}

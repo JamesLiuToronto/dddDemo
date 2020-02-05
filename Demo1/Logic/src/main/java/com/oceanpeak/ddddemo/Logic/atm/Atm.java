@@ -2,8 +2,10 @@ package com.oceanpeak.ddddemo.Logic.atm;
 
 import java.math.BigDecimal;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+
 import com.oceanpeak.ddddemo.Logic.common.AggregateRoot;
-import com.oceanpeak.ddddemo.Logic.management.HeadOffice;
 import com.oceanpeak.ddddemo.Logic.sharedkernel.Money;
 
 public class Atm extends AggregateRoot {
@@ -11,6 +13,8 @@ public class Atm extends AggregateRoot {
 	private static BigDecimal commissionRate = (new BigDecimal(0.01)).setScale(Money.ROUND, BigDecimal.ROUND_HALF_UP);
 	private Money moneyInside = Money.NONE;
 	private BigDecimal moneyCharged = new BigDecimal(0);
+	@Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
 	public void takeMoney(BigDecimal amount) {
 
